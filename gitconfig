@@ -1,0 +1,18 @@
+# This is Git's per-user configuration file.
+[user]
+    name = allenlee
+    email = allenlee2013@gmail.com
+
+[alias]           
+    co=checkout           
+    ci=commit           
+    st=status           
+    pl=pull           
+    ps=push           
+    dt=difftool           
+    l=log
+    cp=cherry-pick           
+    ca=commit-a           
+    b=branch
+[credential]
+	helper = store
