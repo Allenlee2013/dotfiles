@@ -1,1 +1,1 @@
-personal configure files, include vimrc, gitconfig, etc
+personal configure files, vimrc, gitconfig, clang-format, etc
