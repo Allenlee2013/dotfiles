@@ -176,6 +176,7 @@ Plugin 'powerman/vim-plugin-AnsiEsc'
 
 Plugin 'kana/vim-operator-user'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'kien/rainbow_parentheses.vim'
 
 if g:islinux
     Plugin 'Valloric/YouCompleteMe'           
@@ -316,7 +317,7 @@ if g:iswindows
     set guifont=Consolas:h10
     " set guifont=Ubuntu_Mono:h13
 else
-    set guifont=Ubuntu\ Mono\ 13
+    set guifont=Ubuntu\ Mono\ 12
 endif
 "set nowrap                                            "设置不自动换行
 set shortmess=atI                                     "去掉欢迎界面
@@ -335,8 +336,7 @@ if g:isGUI
     colorscheme hybrid_material
     set background=dark
 else
-    " colorscheme hybrid_material
-    colorscheme elflord
+    colorscheme hybrid_material
     set background=light
 endif
 
@@ -636,12 +636,6 @@ let g:tagbar_autoclose=0                    "自动折叠
 "-------------------------------------------------------------
 " set runtimepath+=H:/Program\ Files/gvim/vimfiles/bundle/YouCompleteMe
 
-if (has('win32'))
-    let g:ycm_global_ycm_extra_conf = '$VIM/vimfiles/bundle/YouCompleteMe/python/ycm/.ycm_extra_conf.py'
-else
-    let g:ycm_global_ycm_extra_conf = '$VIM/bundle/YouCompleteMe/python/ycm/.ycm_extra_conf.py'
-endif
-
 let g:ycm_complete_in_comments=1                    " 补全功能在注释中同样有效
 let g:ycm_complete_in_strings=1
 let g:ycm_confirm_extra_conf=0                      " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
@@ -663,12 +657,23 @@ set tags+=stdcpp.tags " 引入 C++ 标准库tags
 set completeopt-=preview                            " 补全内容不以分割子窗口形式出现，只显示补全列表
 inoremap <leader>; <C-x><C-o>                       " OmniCppComplete 快捷键
 
-" 设置快捷键前缀为ALT
-nmap <M-d> :YcmShowDetailedDiagnostic<cr>           
-nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-nmap <M-l> :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
-nmap <M-f> :YcmCompleter GoToDefinition <C-R>=expand("<cword>")<CR><CR>
+if (has('win32'))
+    let g:ycm_global_ycm_extra_conf = '$VIM/vimfiles/bundle/YouCompleteMe/python/ycm/.ycm_extra_conf.py'
 
+    nmap <M-d> :YcmShowDetailedDiagnostic<cr>           
+    nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <M-l> :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <M-f> :YcmCompleter GoToDefinition <C-R>=expand("<cword>")<CR><CR>
+else
+    let g:ycm_global_ycm_extra_conf = '$VIM/bundle/YouCompleteMe/python/ycm/.ycm_extra_conf.py'
+
+    nmap <leader>gd :YcmShowDetailedDiagnostic<cr>           
+    nmap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <leader>gl :YcmCompleter GoToDeclaration <C-R>=expand("<cword>")<CR><CR>
+    nmap <leader>gf :YcmCompleter GoToDefinition <C-R>=expand("<cword>")<CR><CR>
+endif
+
+" vim-clang-format
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
             \ "AllowShortIfStatementsOnASingleLine" : "true",
@@ -678,10 +683,37 @@ let g:clang_format#style_options = {
 " map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+autocmd FileType c,cpp,objc ClangFormatAutoEnable
 " if you install vim-operator-user
 autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting:
 nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+" Rainbow Parentheses
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
+" Toggle it on/off
+map <leader>rp :RainbowParenthesesToggle<CR>
 
 " =============================================================================
 "                          << 以下为常用工具配置 >>
